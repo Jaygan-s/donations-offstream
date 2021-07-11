@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "streamer-client", "streamer-client\streamer-client.csproj", "{DE2AEA13-6A54-4767-BEB7-EAE20379CD32}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE2AEA13-6A54-4767-BEB7-EAE20379CD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE2AEA13-6A54-4767-BEB7-EAE20379CD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE2AEA13-6A54-4767-BEB7-EAE20379CD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE2AEA13-6A54-4767-BEB7-EAE20379CD32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B52E889-2CB7-4CFE-8D28-CCB70793C59A}
+	EndGlobalSection
+EndGlobal
