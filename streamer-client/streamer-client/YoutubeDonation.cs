@@ -24,5 +24,10 @@ namespace StreamerClient
             string result = $"https://youtu.be/{id}?t={start}";
             return result;
         }
+
+        public string GetID()
+        {
+            return id;
+        }
     }
 }

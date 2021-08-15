@@ -23,6 +23,8 @@ namespace StreamerClient
     class DonationCatcher
     {
         private WebsocketClient socket;
+        public event EventHandler<YoutubeDonation> OnYoutubeDonation;
+
 
         public async Task Begin(string key)
         {
@@ -36,11 +38,11 @@ namespace StreamerClient
             
             if(version == null)
             {
-                Console.WriteLine("오류 : [버전 찾을 수 없음]");
+                Console.WriteLine("오류 : [버전 찾을 수 없음]"); // message says "version not found"
             }
             if (token == null)
             {
-                Console.WriteLine("오류 : [토큰 찾을 수 없음]");
+                Console.WriteLine("오류 : [토큰 찾을 수 없음]"); // message says "token not found"
             }
 
             /* Create URI for websocket connection */
@@ -63,23 +65,31 @@ namespace StreamerClient
             await socket.Start();
         }
 
-        private static void OnDisconnected(DisconnectionInfo info)
+        private void OnDisconnected(DisconnectionInfo info)
         {
             Console.WriteLine($"[Disconnected. Reason: {(info.Exception != null ? info.Exception.Message : "(None)")}]");
         }
-        private static void OnReconnecting(ReconnectionInfo info)
+        private void OnReconnecting(ReconnectionInfo info)
         {
-            Console.WriteLine($"[Re-connecting... Type: {info.Type}]");
+            Console.WriteLine($"[Connecting... Type: {info.Type}]");
         }
-        private static void OnMessageReceived(ResponseMessage message)
+        private void OnMessageReceived(ResponseMessage message)
         {
             Console.WriteLine($"[Received Message] \n\tType:{ message.MessageType}\n\tContent > {message.Text}");
             Parse(message.Text);
         }
 
-        private static void Parse(string str)
+        private void Parse(string str)
         {
-            if(str.Contains("media:playing"))
+            // TO-DO 1: add handler for these messages:
+            // 1. media:playing  : info(video id, start time, duration...) of incoming video donation. 
+            // 2. media:show     : to toggle on player
+            // 3. media:started  : to hit the play button
+            // 4. media:finished : to stop playing
+            // TO-DO 2: encapsulate these up and put somewhere else since this is just a Parse function.
+
+            // handler for media:playing
+            if (str.Contains("media:playing"))
             {
                 if (RegexMatchFromString(str, @"""type"":""(.{0,15})"",") == "youtube")
                 {
@@ -88,12 +98,14 @@ namespace StreamerClient
                     string start = RegexMatchFromString(str, @"""start"":(\d*),");
                     string duration = RegexMatchFromString(str, @"""duration"":(\d*),");
 
-                    // on parsing success
+                    // on parsing success, call Youtube donation event handler
                     if(id != null && start != null && duration != null)
                     {
                         YoutubeDonation donation = YoutubeDonation.CreateInstance(id, start, duration);
-                        string link = donation.MakeLink();
-                        bool a = true;
+                        if(OnYoutubeDonation != null)
+                        {
+                            OnYoutubeDonation(this, donation);
+                        }
                     }
                 }
             }
